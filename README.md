@@ -34,10 +34,10 @@ This repository contains a demo app, which shows how to use the Amazon IVS Broad
 ### Referencing your stream in the app
 
 1. Open the [Amazon IVS Console](https://console.aws.amazon.com/ivs) and navigate to the channel you would like to use.
-2. Open `Helpers/Constants.swift` and find 16 - 18.
+2. Open `Helpers/Constants.swift` and find lines 16 - 18.
 3. Copy the _Ingest Server_ for the channel and paste it into the `ingestServer` field on line 16 between the quotes. The resulting line should look like the following: `static let ingestServer = "rtmps://<ingest_server_url>:443/app/"`
-4. Copy the _Stream Key_ for the channel and paste it into the `streamKey` field on line 19 between the two escaped quotes.
-5. Copy the _Playback URL_ for the channel and paste it into the `playbackUrl` field on line 20 between the two escaped quotes.
+4. Copy the _Stream Key_ for the channel and paste it into the `streamKey` field on line 17 between the quotes.
+5. Copy the _Playback URL_ for the channel and paste it into the `playbackUrl` field on line 18 between the quotes.
 6. Save and run the application.
 
 You can also change the values for any of these fields in the app settings once you have launched the app on a physical iPhone.
