@@ -31,6 +31,11 @@ class BroadcastConfiguration {
 
         activeConfiguration.video = activeVideoConfiguration
         activeConfiguration.audio = activeAudioConfiguration
+        do {
+            try activeConfiguration.audio.setChannels(2)
+        } catch {
+            print("❌ Could not set 2 audio channels: \(error)")
+        }
 
         // Cleanup if the app was suspended while screen sharing was still active
         userDefaults.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
