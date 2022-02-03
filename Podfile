@@ -5,7 +5,7 @@ platform :ios, '14.0'
 workspace 'Broadcasting'
 
 def amazonIVS
-    pod 'AmazonIVSBroadcast', '~> 1.1.0'
+    pod 'AmazonIVSBroadcast', '~> 1.2.0'
 end
 
 target 'Broadcasting' do
