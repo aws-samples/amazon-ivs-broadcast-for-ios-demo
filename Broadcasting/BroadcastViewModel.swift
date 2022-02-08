@@ -263,6 +263,42 @@ class BroadcastViewModel: NSObject, ObservableObject {
         }
     }
 
+    func willResignActive() {
+        guard sessionIsRunning,
+              let session = broadcastSession,
+              let cgImage = UIImage(named: "camera_off")?.cgImage else {
+                  return
+              }
+
+        // Create the background image source
+        guard let source = session.createAppBackgroundImageSource(withAttemptTrim: true, onComplete: { error in
+            print("Background Video Generation Done - Error: \(error.debugDescription)")
+        }) else {
+            return
+        }
+
+        // Convert the CIImage to a CVPixelBuffer
+        let ciImage = CIImage(cgImage: cgImage)
+        let attrs = [
+            kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
+            kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue,
+            kCVPixelBufferMetalCompatibilityKey: kCFBooleanTrue,
+        ] as CFDictionary
+        var pixelBuffer: CVPixelBuffer!
+        CVPixelBufferCreate(kCFAllocatorDefault,
+                            Int(ciImage.extent.size.width),
+                            Int(ciImage.extent.size.height),
+                            kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+                            attrs,
+                            &pixelBuffer)
+        let context = CIContext()
+        context.render(ciImage, to: pixelBuffer)
+
+        // Submit to CVPixelBuffer and finish the source
+        source.add(pixelBuffer)
+        source.finish()
+    }
+
     @objc func audioSessionInterrupted(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
               let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
