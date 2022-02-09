@@ -53,8 +53,8 @@ class BroadcastConfiguration {
         }
         cameraOffSlot.preferredAudioInput = .unknown
         cameraOffSlot.preferredVideoInput = .userImage
-        cameraOffSlot.size = UIScreen.main.bounds.size
-        cameraOffSlot.aspect = .fill
+        cameraOffSlot.matchCanvasSize = true
+        cameraOffSlot.matchCanvasAspectMode = true
         cameraOffSlot.zIndex = 1
 
         activeConfiguration.mixer.slots = [cameraSlot, cameraOffSlot]

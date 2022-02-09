@@ -12,13 +12,18 @@ class SampleHandler: RPBroadcastSampleHandler {
     private var ivsRPBroadcastSession: IVSReplayKitBroadcastSession?
     private var ingestServer: String = ""
     private var streamKey: String = ""
-    private let userDefaults = UserDefaults(suiteName: Constants.appGroupName) ?? UserDefaults.standard
+    private let userDefaults = UserDefaults(suiteName: Constants.appGroupName)
 
     override init() {
         super.init()
 
-        ingestServer = userDefaults.string(forKey: Constants.kIngestServer) ?? ""
-        streamKey = userDefaults.string(forKey: Constants.kStreamKey) ?? ""
+        guard let userDefaults = userDefaults else {
+            NSLog("❌ could not initialize user defaults with database name (suiteName): \(Constants.appGroupName)")
+            return
+        }
+
+        ingestServer = userDefaults.string(forKey: Constants.kIngestServer) ?? Constants.ingestServer
+        streamKey = userDefaults.string(forKey: Constants.kStreamKey) ?? Constants.streamKey
 
         do {
             try ivsRPBroadcastSession = IVSReplayKitBroadcastSession(
@@ -79,7 +84,7 @@ class SampleHandler: RPBroadcastSampleHandler {
 
     private func stopStream() {
         ivsRPBroadcastSession?.stop()
-        userDefaults.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
+        userDefaults?.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
     }
 
     private func startStream() {
@@ -102,14 +107,14 @@ extension SampleHandler: IVSBroadcastSession.Delegate {
 
         switch state {
         case .connected:
-            userDefaults.setValue(true, forKey: Constants.kReplayKitSessionHasBeenStarted)
+            userDefaults?.setValue(true, forKey: Constants.kReplayKitSessionHasBeenStarted)
         default:
-            userDefaults.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
+            userDefaults?.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
         }
     }
 
     func broadcastSession(_ session: IVSBroadcastSession, didEmitError error: Error) {
         NSLog("❌ IVSBroadcastSession did emit error: \(error)")
-        userDefaults.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
+        userDefaults?.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
     }
 }
