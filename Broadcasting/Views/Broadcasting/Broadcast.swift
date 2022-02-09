@@ -163,9 +163,6 @@ struct BroadcastView: View {
         .onReceive(NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)) { notification in
             viewModel.audioSessionInterrupted(notification)
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
-            viewModel.willResignActive()
-        }
         .onChange(of: viewModel.sessionIsRunning, perform: { _ in
             if viewModel.sessionIsRunning {
                 timeManager.start()

@@ -83,6 +83,8 @@ class BroadcastViewModel: NSObject, ObservableObject {
     private var customImageSource: IVSCustomImageSource?
     private var attachedCamera: IVSDevice?
     private var sessionWasRunningBeforeInterruption = false
+    private var appBackgroundImageSource: IVSBackgroundImageSource?
+    private var appBackgroundImagePixelBuffer: CVPixelBuffer!
 
     override init() {
         ingestServer = configurations.userDefaults.string(forKey: Constants.kIngestServer) ?? Constants.ingestServer
@@ -143,6 +145,7 @@ class BroadcastViewModel: NSObject, ObservableObject {
             attachedCamera = nil
             attachDeviceCamera()
             attachDeviceMic()
+            createAppBackgroundImageSource()
         } catch {
             print("❌ Error initializing IVSBroadcastSession: \(error)")
         }
@@ -263,17 +266,15 @@ class BroadcastViewModel: NSObject, ObservableObject {
         }
     }
 
-    func willResignActive() {
-        guard sessionIsRunning,
-              let session = broadcastSession,
-              let cgImage = UIImage(named: "camera_off")?.cgImage else {
-                  return
-              }
-
-        // Create the background image source
-        guard let source = session.createAppBackgroundImageSource(withAttemptTrim: true, onComplete: { error in
+    func createAppBackgroundImageSource() {
+        guard let source = broadcastSession?.createAppBackgroundImageSource(withAttemptTrim: true, onComplete: { error in
             print("Background Video Generation Done - Error: \(error.debugDescription)")
         }) else {
+            return
+        }
+        appBackgroundImageSource = source
+
+        guard let cgImage = UIImage(named: "camera_off")?.cgImage else {
             return
         }
 
@@ -284,19 +285,21 @@ class BroadcastViewModel: NSObject, ObservableObject {
             kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue,
             kCVPixelBufferMetalCompatibilityKey: kCFBooleanTrue,
         ] as CFDictionary
-        var pixelBuffer: CVPixelBuffer!
-        CVPixelBufferCreate(kCFAllocatorDefault,
+
+        let result = CVPixelBufferCreate(kCFAllocatorDefault,
                             Int(ciImage.extent.size.width),
                             Int(ciImage.extent.size.height),
                             kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
                             attrs,
-                            &pixelBuffer)
+                            &appBackgroundImagePixelBuffer)
+        print("CVPixelBufferCreate result successful: \(result == kCVReturnSuccess). Result: \(result)")
+
         let context = CIContext()
-        context.render(ciImage, to: pixelBuffer)
+        context.render(ciImage, to: appBackgroundImagePixelBuffer)
 
         // Submit to CVPixelBuffer and finish the source
-        source.add(pixelBuffer)
-        source.finish()
+        appBackgroundImageSource?.add(appBackgroundImagePixelBuffer)
+        appBackgroundImageSource?.finish()
     }
 
     @objc func audioSessionInterrupted(_ notification: Notification) {
