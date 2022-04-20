@@ -7,19 +7,20 @@ This repository contains a demo app, which shows how to use the Amazon IVS Broad
 ## Setup
 
 1. Clone the repository to your local machine.
-2. Install the SDK dependency using CocoaPods. This can be done by running the following commands from the repository folder:
+2. Ensure you are using a supported version of Ruby, as [the version included with macOS is deprecated](https://developer.apple.com/documentation/macos-release-notes/macos-catalina-10_15-release-notes#Scripting-Language-Runtimes). This repository is tested with the version in [`.ruby-version`](./.ruby-version), which can be used automatically with [rbenv](https://github.com/rbenv/rbenv#installation).
+3. Install the SDK dependency using CocoaPods. This can be done by running the following commands from the repository folder:
    * `bundle install`
    * `bundle exec pod install`
    * For more information about these commands, see [Bundler](https://bundler.io/) and [CocoaPods](https://guides.cocoapods.org/using/getting-started.html).
-3. Open `Broadcasting.xcworkspace`.
-4. Since the simulator doesn't support the use of cameras or ReplayKit, there are a couple changes you need to make before building and running the app on a physical device.
+4. Open `Broadcasting.xcworkspace`.
+5. Since the simulator doesn't support the use of cameras or ReplayKit, there are a couple changes you need to make before building and running the app on a physical device.
     1. Have an active Apple Developer account in order to build to physical devices.
     2. Modify the Bundle Identifier for both `Broadcasting` and `ReplayKitBroadcaster` targets.
     3. Choose a Team for both targets.
     4. Create a new App Group ID based on your new Bundle Identifier for both targets, and include the targets in only that App Group.
     5. Modify `appGroupName` (can be found in `Helpers/Constants.swift`) to use your newly created App Group ID.
-5. (Optional)* Refer to the [Streaming to Amazon IVS](#streaming-to-amazon-ivs) section of this readme to set up the app for streaming.
-6. You can now build and run the projects on a device.
+6. (Optional)* Refer to the [Streaming to Amazon IVS](#streaming-to-amazon-ivs) section of this readme to set up the app for streaming.
+7. You can now build and run the projects on a device.
 
 <sub>*You can run and build this app without an Amazon IVS Channel, but you will need an Amazon IVS Channel in order to start broadcasting.</sub>
 
