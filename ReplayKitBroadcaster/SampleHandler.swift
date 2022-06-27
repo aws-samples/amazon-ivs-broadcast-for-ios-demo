@@ -85,6 +85,7 @@ class SampleHandler: RPBroadcastSampleHandler {
     private func stopStream() {
         ivsRPBroadcastSession?.stop()
         userDefaults?.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
+        ivsRPBroadcastSession?.broadcastFinished()
     }
 
     private func startStream() {
@@ -106,10 +107,10 @@ extension SampleHandler: IVSBroadcastSession.Delegate {
         NSLog("ℹ️ IVSBroadcastSession state did change: \(state.rawValue)")
 
         switch state {
-        case .connected:
-            userDefaults?.setValue(true, forKey: Constants.kReplayKitSessionHasBeenStarted)
-        default:
-            userDefaults?.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
+            case .connected:
+                userDefaults?.setValue(true, forKey: Constants.kReplayKitSessionHasBeenStarted)
+            default:
+                userDefaults?.setValue(false, forKey: Constants.kReplayKitSessionHasBeenStarted)
         }
     }
 
