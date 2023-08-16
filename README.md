@@ -9,8 +9,7 @@ This repository contains a demo app, which shows how to use the Amazon IVS Broad
 1. Clone the repository to your local machine.
 2. Ensure you are using a supported version of Ruby, as [the version included with macOS is deprecated](https://developer.apple.com/documentation/macos-release-notes/macos-catalina-10_15-release-notes#Scripting-Language-Runtimes). This repository is tested with the version in [`.ruby-version`](./.ruby-version), which can be used automatically with [rbenv](https://github.com/rbenv/rbenv#installation).
 3. Install the SDK dependency using CocoaPods. This can be done by running the following commands from the repository folder:
-   * `bundle install`
-   * `bundle exec pod install`
+   * `pod install`
    * For more information about these commands, see [Bundler](https://bundler.io/) and [CocoaPods](https://guides.cocoapods.org/using/getting-started.html).
 4. Open `Broadcasting.xcworkspace`.
 5. Since the simulator doesn't support the use of cameras or ReplayKit, there are a couple changes you need to make before building and running the app on a physical device.
