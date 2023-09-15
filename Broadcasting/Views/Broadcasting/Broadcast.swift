@@ -170,5 +170,8 @@ struct BroadcastView: View {
                 timeManager.stop()
             }
         })
+        .onChange(of: viewModel.isScreenSharingActive) { newValue in
+            isControlButtonsPresent = !newValue
+        }
     }
 }
