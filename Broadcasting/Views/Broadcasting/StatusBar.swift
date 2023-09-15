@@ -51,6 +51,14 @@ struct StatusBar: View {
         }
     }
 
+    private func toggleManager() {
+        if viewModel.isScreenSharingActive {
+            manager.start()
+        } else {
+            manager.stop()
+        }
+    }
+
     var body: some View {
         if verticalSizeClass == .compact {
             // Landscape
@@ -80,6 +88,9 @@ struct StatusBar: View {
                 sessionStateLabel()
                     .padding(.top)
             }
+            .onChange(of: viewModel.isScreenSharingActive) { _ in
+                toggleManager()
+            }
 
         } else {
             // Portrait
@@ -102,7 +113,9 @@ struct StatusBar: View {
             .padding(16)
             .padding(.top, 30)
             .background(Color.black)
-
+            .onChange(of: viewModel.isScreenSharingActive) { _ in
+                toggleManager()
+            }
         }
     }
 }

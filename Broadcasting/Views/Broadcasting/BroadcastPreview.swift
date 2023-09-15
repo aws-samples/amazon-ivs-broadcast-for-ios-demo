@@ -23,8 +23,12 @@ struct BroadcastPreview: UIViewRepresentable {
     }
 
     func attachCameraPreview() {
+        let attachedCameras = viewModel.broadcastSession?.listAttachedDevices()
+            .filter({ $0.descriptor().type == .camera })
+            .compactMap({ $0 as? IVSImageDevice })
+
         do {
-            if let preview = try viewModel.broadcastSession?.previewView(with: .fill) {
+            if let preview = try attachedCameras?.first?.previewView(with: .fit) {
                 attachCameraPreview(preview)
             }
         } catch {
