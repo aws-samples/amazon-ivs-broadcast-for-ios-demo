@@ -1,18 +1,18 @@
 PODS:
-  - AmazonIVSBroadcast (1.13.0):
-    - AmazonIVSBroadcast/Core (= 1.13.0)
-  - AmazonIVSBroadcast/Core (1.13.0)
+  - AmazonIVSBroadcast (1.28.1):
+    - AmazonIVSBroadcast/Core (= 1.28.1)
+  - AmazonIVSBroadcast/Core (1.28.1)
 
 DEPENDENCIES:
-  - AmazonIVSBroadcast (~> 1.13.0)
+  - AmazonIVSBroadcast (~> 1.28.1)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AmazonIVSBroadcast
 
 SPEC CHECKSUMS:
-  AmazonIVSBroadcast: 383a63e08c13c26a0268a01f23b8288030be53b9
+  AmazonIVSBroadcast: 7bb8bbc080cb78088aba900eaecc2b37feb7d39d
 
-PODFILE CHECKSUM: e95dbdc50f74bbbc7accde661d12b343df017efc
+PODFILE CHECKSUM: d28c6238a6dc71d0fc7241cde9afea5c0b408cbd
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.16.2
